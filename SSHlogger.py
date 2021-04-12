@@ -2,12 +2,13 @@
 #-*-coding:utf-8-*-
 #This program analyzes auth.log files (both unzipped and zipped) and counts failed and accepted login attempts, subtracting our own attempts.
 #Created by Iker García.
- 
+
 import os
 import os.path
 import glob
 import gzip
 import time
+user=os.getenv("USER")
 
 a = 0 #Variable to store accepted log number from previous runs.
 b = 0 #Variable to count accepted log number.
@@ -57,14 +58,14 @@ for zip in zipfile:
       elif "Failed password for 192.*" in zline:
         d = d-1
       elif "Failed password for *.*.*.*" in zline:
-	d = d-1
+        d = d-1
 
 a = int(a) #a variable must be int type.
 c = int (c) #c vairable must be int type.
 sa = b - a  #Successful login attempts (Successful attacks).
 ra = d - c #Rejected login attempts (Rejected attacks).
 
-os.chdir("/home/pi") #Changes directory to the one where a log is going to be stored.
+os.chdir("/home/"+user) #Changes directory to the one where a log is going to be stored.
 
 log = open("SSHlog.txt","a") #Creates a log text.
 log.write(time.strftime("%b %d %Y "))
